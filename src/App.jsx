@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Navbar from './components/Navbar';
+import Section from './components/Section';
+import SectionHeader from './components/SectionHeader';
+import { useRef } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const home = useRef();
+  const projects = useRef();
+  const resume = useRef();
+  const contact = useRef();
+
+  const navItems = [
+    { title: 'Home', ref: home },
+    { title: 'Projects', ref: projects },
+    { title: 'Resume', ref: resume },
+    { title: 'Contact', ref: contact }
+  ];
+
+  function handleClickSection(ref) {
+    if (!ref) return;
+    ref.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Navbar navItems={navItems} scrollToSection={handleClickSection} />
+      <main>
+        <Section ref={home}>
+          <SectionHeader 
+            title="Welcome to Michael Harmer's Personal Website"
+            subtitle="This is an (under construction) app that will showcase my projects as they are developed."
+          >
+          </SectionHeader>
+        </Section>
+        <Section ref={projects}>
+          <SectionHeader title="Projects">
+            This is a list of projects I have worked on or am currently working on.
+          </SectionHeader>
+        </Section>
+        <Section ref={resume}>
+          <SectionHeader 
+            title="Resume"
+            subtitle="My resume is available for download. Please click the link below to view it."
+          >
+            <a 
+              href="/path/to/resume.pdf" 
+              className="text-blue-500 hover:underline mt-2"
+              download
+            >
+              Download Resume
+            </a>
+          </SectionHeader>
+        </Section>
+        <Section ref={contact}>
+          <SectionHeader 
+            title="Contact"
+            subtitle="If you would like to get in touch, please reach out via email at{' '}"
+          >
+          </SectionHeader>
+        </Section>
+      </main>
     </>
-  )
+  );
 }
-
-export default App
